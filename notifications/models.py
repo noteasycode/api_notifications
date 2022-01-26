@@ -1,13 +1,16 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.contrib.auth.models import AbstractUser
 
-User = get_user_model()
+
+class User(AbstractUser):
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
 
 class Notification(models.Model):
     name = models.CharField(max_length=255)
     text = models.TextField()
     notify_date = models.DateTimeField()
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
 
     class Meta:
         ordering = ['-notify_date']
