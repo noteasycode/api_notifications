@@ -20,13 +20,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'notifications.apps.NotificationsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
+    'notifications.apps.NotificationsConfig',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -41,7 +43,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'api_notifications.urls'
 
-AUTH_USER_MODEL = 'notifications.User'
+AUTH_USER_MODEL = 'users.CustomUser'
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 
