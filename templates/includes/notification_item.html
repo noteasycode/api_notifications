@@ -1,0 +1,16 @@
+<div class="card mb-3 mt-1 shadow-sm">
+  <div class="card-body">
+      <p class="card-text">Name: {{ notification.name|linebreaksbr }}</p>
+      <p class="card-text">Description:<br> {{ notification.text|linebreaksbr }}</p>
+      <small class="text-muted"> Recieve notification via email on: {{ notification.notify_date }}</small>
+        <br>
+      {% if user == author %}
+          <a class="btn btn-sm btn-info" href="#" role="button">
+            Edit
+          </a>
+          <a class="btn btn-sm btn-danger" href="#" role="button">
+            Remove
+          </a>
+        {% endif %}
+  </div>
+</div>

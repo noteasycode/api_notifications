@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %} Notifications list {% endblock %}
+{% block header %} Notifications list {% endblock %}
+{% block content %}
+
+<main role="main" class="container">
+  <div class="row">
+    <div class="col-md-9">
+       <div class="container">
+    <!-- Вывод ленты записей -->
+           {% for notification in notifications %}
+                {% include "includes/notification_item.html" with notification=notification author=author %}
+            {% endfor %}
+    </div>
+    </div>
+  </div>
+</main>
+
+{% endblock content%}

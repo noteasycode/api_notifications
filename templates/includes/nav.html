@@ -11,7 +11,10 @@
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Add notification</a>
+          <a class="nav-link" href="{% url 'notifications:new_notification' %}">Add notification</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'notifications:notifications_list' user.username %}">My notifications</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Profile</a>

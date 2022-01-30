@@ -9,7 +9,7 @@ class Notification(models.Model):
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
 
     class Meta:
-        ordering = ['-notify_date']
+        ordering = ['notify_date']
 
     def __str__(self):
         return self.name
