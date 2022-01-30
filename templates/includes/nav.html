@@ -16,10 +16,8 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Profile</a>
         </li>
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-        {% elif user.is_staff %}
         <li class="nav-item">
-          <a class="nav-link" href="#">Accounts</a>
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
         </li>
         {% else %}
         <li class="nav-item">
@@ -27,6 +25,11 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'users:signup' %}">SignUp</a>
+        </li>
+        {% endif %}
+        {% if user.is_staff %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">Accounts</a>
         </li>
         {% endif %}
       </ul>
