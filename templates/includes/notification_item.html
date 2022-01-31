@@ -5,7 +5,7 @@
       <small class="text-muted"> Recieve notification via email on: {{ notification.notify_date }}</small>
         <br>
       {% if user == author %}
-          <a class="btn btn-sm btn-info" href="#" role="button">
+          <a class="btn btn-sm btn-info" href="{% url 'notifications:edit' author.username notification.pk %}" role="button">
             Edit
           </a>
           <a class="btn btn-sm btn-danger" href="#" role="button">

@@ -13,6 +13,7 @@ def index(request):
     return render(request, 'index.html')
 
 
+@login_required()
 def notifications_list(request, username):
     author = get_object_or_404(User, username=username)
     notifications = author.notifications.all()
@@ -40,3 +41,30 @@ def new_notification(request):
         'new.html',
         {'form': form, 'header': header, 'action': action}
     )
+
+
+@login_required()
+def edit_notification(request, username, pk):
+    header = 'Edit notification'
+    action = 'Save'
+    receiver = get_object_or_404(User, username=username)
+    notification = get_object_or_404(Notification, pk=pk, receiver=receiver)
+    if request.user != receiver:
+        return redirect('notifications:notifications_list', username=username)
+    form = NotificationForm(
+        request.POST or None,
+        files=request.FILES or None,
+        instance=notification
+    )
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            return redirect(
+                'notifications:notifications_list', username=username
+            )
+
+    context = {
+        'form': form, 'notification': notification, 'header': header, 'action': action,
+        'pk': pk, 'username': username,
+    }
+    return render(request, "new.html", context)
