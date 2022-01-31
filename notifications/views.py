@@ -68,3 +68,13 @@ def edit_notification(request, username, pk):
         'pk': pk, 'username': username,
     }
     return render(request, "new.html", context)
+
+
+@login_required()
+def delete_notification(request, username, pk):
+    receiver = get_object_or_404(User, username=username)
+    notification = get_object_or_404(Notification, pk=pk, receiver=receiver)
+    if request.user != receiver:
+        return redirect('notifications:notifications_list', username=username)
+    notification.delete()
+    return redirect('notifications:notifications_list', username=username)

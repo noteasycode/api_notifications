@@ -8,7 +8,7 @@
           <a class="btn btn-sm btn-info" href="{% url 'notifications:edit' author.username notification.pk %}" role="button">
             Edit
           </a>
-          <a class="btn btn-sm btn-danger" href="#" role="button">
+          <a class="btn btn-sm btn-danger" href="{% url 'notifications:delete' author.username notification.pk %}" role="button">
             Remove
           </a>
         {% endif %}
