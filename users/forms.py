@@ -6,7 +6,6 @@ User = get_user_model()
 
 
 class CreationForm(forms.UserCreationForm):
-    email = forms.Email
     class Meta(forms.UserCreationForm.Meta):
         model = User
         fields = (
@@ -30,3 +29,4 @@ class UserUpdateForm(forms.UserChangeForm):
             'email',
             'avatar'
         )
+        exclude = ('password1', 'password2')

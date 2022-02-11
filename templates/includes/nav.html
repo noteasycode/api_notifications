@@ -17,8 +17,13 @@
           <a class="nav-link" href="{% url 'notifications:notifications_list' user.username %}">My notifications</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Profile</a>
+          <a class="nav-link" href="{% url 'users:profile' %}">Profile</a>
         </li>
+        {% if user.is_staff %}
+        <li class="nav-item">
+          <a class="nav-link" href="#">Accounts</a>
+        </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Logout</a>
         </li>
@@ -28,11 +33,6 @@
         </li>
         <li class="nav-item">
             <a class="nav-link" href="{% url 'users:signup' %}">SignUp</a>
-        </li>
-        {% endif %}
-        {% if user.is_staff %}
-        <li class="nav-item">
-          <a class="nav-link" href="#">Accounts</a>
         </li>
         {% endif %}
       </ul>
