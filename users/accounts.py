@@ -9,6 +9,8 @@ CustomUser = get_user_model()
 
 class AccountAdminArea(admin.AdminSite):
     site_header = 'Accounts'
+    site_title = 'Accounts'
+    site_url = '/'
 
 
 class NotificationAdmin(admin.ModelAdmin):
