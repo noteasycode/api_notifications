@@ -7,16 +7,6 @@ from notifications.models import Notification
 CustomUser = get_user_model()
 
 
-@admin.action(description='Block selected users')
-def block_user(modeladmin, request, queryset):
-    queryset.update(is_active='False')
-
-
-@admin.action(description='Unblock selected users')
-def unblock_user(modeladmin, request, queryset):
-    queryset.update(is_active='True')
-
-
 class AccountAdminArea(admin.AdminSite):
     site_header = 'Accounts'
 
@@ -40,9 +30,18 @@ class NotificationAdmin(admin.ModelAdmin):
 
 class CustomUserAdmin(admin.ModelAdmin):
     model = CustomUser
-    list_display = ('username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'avatar')
+    list_display = ('username', 'email', 'first_name', 'last_name',
+                    'is_active', 'is_staff', 'avatar')
     list_filter = ('is_active',)
-    actions = [block_user, unblock_user]
+    actions = ('block_user', 'unblock_user')
+
+    @admin.action(permissions=['change'], description='Block selected users')
+    def block_user(self, request, queryset):
+        queryset.update(is_active=False)
+
+    @admin.action(permissions=['change'], description='Unblock selected users')
+    def unblock_user(self, request, queryset):
+        queryset.update(is_active=True)
 
     def has_add_permission(self, request):
         return False
