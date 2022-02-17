@@ -16,6 +16,8 @@ def index(request):
 @login_required()
 def notifications_list(request, username):
     author = get_object_or_404(User, username=username)
+    if request.user != author:
+        return redirect('notifications:notifications_list', username=request.user.username)
     notifications = author.notifications.all()
     notify_amt = notifications.count()
     context = {
