@@ -1,7 +1,10 @@
 import os
+from dotenv import load_dotenv
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -143,9 +146,16 @@ LOGIN_REDIRECT_URL = 'notifications:index'
 
 LOGOUT_REDIRECT_URL = 'notifications:index'
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, '../sent_emails')
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = os.getenv('HOST_EMAIL')
+
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = os.getenv('HOST_EMAIL_USER')
+EMAIL_HOST_PASSWORD = os.getenv('HOST_EMAIL_PASSWORD')
 
 SITE_ID = 2
 
