@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import NotificationForm
 from .models import Notification
+from .tasks import send_email
 
 
 User = get_user_model()
@@ -37,6 +38,7 @@ def new_notification(request):
         new_note = form.save(commit=False)
         new_note.receiver = request.user
         new_note.save()
+        send_email.delay(new_note.id)
         return redirect('notifications:index')
     return render(
         request,
