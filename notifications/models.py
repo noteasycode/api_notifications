@@ -7,6 +7,7 @@ class Notification(models.Model):
     text = models.TextField()
     notify_date = models.DateTimeField()
     receiver = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
+    celery_task_id = models.CharField(max_length=50, blank=True, null=True)
 
     class Meta:
         ordering = ['notify_date']

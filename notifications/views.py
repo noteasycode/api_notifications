@@ -1,3 +1,4 @@
+from celery.result import AsyncResult
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
@@ -18,7 +19,8 @@ def index(request):
 def notifications_list(request, username):
     author = get_object_or_404(User, username=username)
     if request.user != author:
-        return redirect('notifications:notifications_list', username=request.user.username)
+        return redirect(
+            'notifications:notifications_list', username=request.user.username)
     notifications = author.notifications.all()
     notify_amt = notifications.count()
     context = {
@@ -38,7 +40,9 @@ def new_notification(request):
         new_note = form.save(commit=False)
         new_note.receiver = request.user
         new_note.save()
-        send_email.apply_async((new_note.id,), eta=new_note.notify_date)
+        new_note.celery_task_id = send_email.apply_async(
+            (new_note.id,), eta=new_note.notify_date).id
+        new_note.save()
         return redirect('notifications:index')
     return render(
         request,
@@ -62,7 +66,13 @@ def edit_notification(request, username, pk):
     )
     if request.method == 'POST':
         if form.is_valid():
-            form.save()
+            update_note = form.save(commit=False)
+            update_note.save()
+            if update_note.celery_task_id:
+                AsyncResult(update_note.celery_task_id).revoke()
+            update_note.celery_task_id = send_email.apply_async(
+                (update_note.id,), eta=update_note.notify_date).id
+            update_note.save()
             return redirect(
                 'notifications:notifications_list', username=username
             )
@@ -80,5 +90,7 @@ def delete_notification(request, username, pk):
     notification = get_object_or_404(Notification, pk=pk, receiver=receiver)
     if request.user != receiver:
         return redirect('notifications:notifications_list', username=username)
+    if notification.celery_task_id:
+        AsyncResult(notification.celery_task_id).revoke()
     notification.delete()
     return redirect('notifications:notifications_list', username=username)
