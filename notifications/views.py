@@ -38,7 +38,7 @@ def new_notification(request):
         new_note = form.save(commit=False)
         new_note.receiver = request.user
         new_note.save()
-        send_email.delay(new_note.id)
+        send_email.apply_async((new_note.id,), eta=new_note.notify_date)
         return redirect('notifications:index')
     return render(
         request,
