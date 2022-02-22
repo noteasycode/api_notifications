@@ -1,10 +1,16 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from django.urls import reverse_lazy
 
-from .forms import CreationForm, UserUpdateForm
+from .forms import CreationForm, LoginForm, UserUpdateForm
+
+
+class LoginView(auth_views.LoginView):
+    form_class = LoginForm
+    template_name = 'users/login.html'
 
 
 class SignUp(CreateView):

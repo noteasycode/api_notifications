@@ -56,7 +56,7 @@ ROOT_URLCONF = 'api_notifications.urls'
 AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'users.backends.EmailBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
@@ -161,6 +161,10 @@ EMAIL_HOST_PASSWORD = os.getenv('HOST_EMAIL_PASSWORD')
 SITE_ID = 2
 
 SOCIALACCOUNT_QUERY_EMAIL = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_REQUIRED = True
 
